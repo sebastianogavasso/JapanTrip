@@ -1,4 +1,4 @@
-const CACHE_NAME = 'giappone-v4-cache';
+const CACHE_NAME = 'giappone-v8-cache';
 const ASSETS = [
   './',
   './index.html',
@@ -6,11 +6,9 @@ const ASSETS = [
   './manifest.json',
   './GUIDA-DETTAGLIATA.md',
   './LISTA-VALIGIA-50GG.md',
-  './icon-192.png',
-  './icon-512.png',
   'https://unpkg.com/react@18/umd/react.production.min.js',
   'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
-  'https://unpkg.com/@babel/standalone/babel.min.js',
+  'https://unpkg.com/@babel/standalone@7.29.7/babel.min.js',
   'https://unpkg.com/localforage@1.10.0/dist/localforage.min.js'
 ];
 
@@ -21,7 +19,7 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('📦 Caching assets...');
-        return cache.addAll(ASSETS);
+        return Promise.allSettled(ASSETS.map(u => cache.add(u)));
       })
       .then(() => self.skipWaiting())
   );
